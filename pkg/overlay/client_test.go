@@ -5,6 +5,7 @@ package overlay
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"testing"
 
@@ -262,6 +263,10 @@ func newServer(ctx context.Context) (*grpc.Server, *Server, error) {
 
 	grpcServer := grpc.NewServer(identOpt)
 	cache, err := NewRedisOverlayCache("127.0.0.1:6379", "", 1, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	s := &Server{cache: cache}
 
 	proto.RegisterOverlayServer(grpcServer, s)
